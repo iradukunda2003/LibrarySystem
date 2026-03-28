@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: LibrarySystem
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/LibraryManagement
+    username: postgres
+    password: claudine@2003
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.postgresSQLDialect
+  
