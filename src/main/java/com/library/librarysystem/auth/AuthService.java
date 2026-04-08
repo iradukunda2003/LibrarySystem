@@ -3,7 +3,6 @@ package com.library.librarysystem.auth;
 import com.library.librarysystem.member.Member;
 import com.library.librarysystem.member.MemberRepository;
 import com.library.librarysystem.security.JwtUtil;
-import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,21 +26,26 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    // saves the member with encrypted password and returns a token
-    public com.library.librarysystem.auth.AuthResponse register(Member member) {
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+    public AuthResponse register(AuthRequest request) {
+        Member member = new Member();
+        member.setName(request.getName());
+        member.setEmail(request.getEmail());
+        member.setPassword(passwordEncoder.encode(request.getPassword()));
         member.setRole("ROLE_USER");
         memberRepository.save(member);
+
         String token = jwtUtil.generateToken(member.getEmail());
-        return new com.library.librarysystem.auth.AuthResponse(token, member.getName() + " registered successfully");
+        return new AuthResponse(token,
+                member.getName() + " registered successfully");
     }
 
-    // checks email and password then returns a token
-    public com.library.librarysystem.auth.AuthResponse login(com.library.librarysystem.auth.@Valid AuthRequest request) {
+
+    public AuthResponse login(AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(), request.getPassword()));
+
         String token = jwtUtil.generateToken(request.getEmail());
-        return new com.library.librarysystem.auth.AuthResponse(token, "Login successful");
+        return new AuthResponse(token, "Login successful");
     }
 }

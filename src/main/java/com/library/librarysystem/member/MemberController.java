@@ -20,7 +20,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    // any logged in user can register
+
     @PostMapping
     @Operation(summary = "Add a new member")
     public ResponseEntity<MemberResponseDto> addMember(
@@ -29,7 +29,6 @@ public class MemberController {
                 memberService.addMember(memberRequestDto), HttpStatus.CREATED);
     }
 
-    // only ADMIN can see all members
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all members — ADMIN only")
@@ -38,7 +37,6 @@ public class MemberController {
                 memberService.getAllMembers(), HttpStatus.OK);
     }
 
-    // any logged in user can view by ID
     @GetMapping("/{id}")
     @Operation(summary = "Get a member by ID")
     public ResponseEntity<MemberResponseDto> getMemberById(
@@ -47,7 +45,7 @@ public class MemberController {
                 memberService.getMember(id), HttpStatus.OK);
     }
 
-    // any logged in user can search by name
+
     @GetMapping("/name")
     @Operation(summary = "Get a member by name")
     public ResponseEntity<MemberResponseDto> getMemberByName(
@@ -56,7 +54,7 @@ public class MemberController {
                 memberService.getMember(name), HttpStatus.OK);
     }
 
-    // any logged in user can update their own info
+
     @PutMapping
     @Operation(summary = "Update a member by name")
     public ResponseEntity<MemberResponseDto> updateMember(
@@ -66,7 +64,7 @@ public class MemberController {
                 memberService.updateMember(name, memberRequestDto), HttpStatus.OK);
     }
 
-    // only ADMIN can delete a member
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a member — ADMIN only")

@@ -30,11 +30,10 @@ public class Member {
     @Column(name = "member_email", unique = true, nullable = false)
     private String email;
 
-    // stored as BCrypt hash — never saved as plain text
     @Column(name = "member_password", nullable = false)
     private String password;
 
-    // every new member gets ROLE_USER by default
+
     @Column(name = "member_role", nullable = false)
     private String role = "ROLE_USER";
 }

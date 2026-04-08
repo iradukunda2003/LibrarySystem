@@ -8,7 +8,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// adds lock icon in Swagger — paste your token there to test secured endpoints
+
 @Configuration
 public class OpenApiConfig {
 

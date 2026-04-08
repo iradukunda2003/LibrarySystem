@@ -20,7 +20,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // only ADMIN can add a book
+
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add a new book — ADMIN only")
@@ -30,7 +30,7 @@ public class BookController {
                 bookService.addBook(bookDto), HttpStatus.CREATED);
     }
 
-    // any logged in user can view all books
+
     @GetMapping
     @Operation(summary = "Get all books")
     public ResponseEntity<List<Book>> getAllBooks() {
@@ -38,7 +38,7 @@ public class BookController {
                 bookService.getAllBooks(), HttpStatus.OK);
     }
 
-    // any logged in user can view a book by ID
+
     @GetMapping("/{id}")
     @Operation(summary = "Get a book by ID")
     public ResponseEntity<Book> getBook(@PathVariable Long id) {
@@ -46,7 +46,7 @@ public class BookController {
                 bookService.getBook(id), HttpStatus.OK);
     }
 
-    // any logged in user can search by title
+
     @GetMapping("/title")
     @Operation(summary = "Get a book by title")
     public ResponseEntity<Book> getBookByTitle(
@@ -55,7 +55,7 @@ public class BookController {
                 bookService.getBookByTitle(title), HttpStatus.OK);
     }
 
-    // only ADMIN can update a book
+
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update a book — ADMIN only")
@@ -66,7 +66,7 @@ public class BookController {
                 bookService.updateBook(title, bookDto), HttpStatus.OK);
     }
 
-    // only ADMIN can delete a book
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a book — ADMIN only")

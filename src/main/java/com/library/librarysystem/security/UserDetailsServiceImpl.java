@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-// Spring Security calls this to find the member by email
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 

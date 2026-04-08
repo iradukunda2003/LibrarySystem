@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
-// generates tokens, reads tokens, checks if token is valid
+
 @Component
 public class JwtUtil {
 
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long expirationMs = 86400000; // 24 hours
+    private final long expirationMs = 86400000;
 
     public String generateToken(String email) {
         return Jwts.builder()

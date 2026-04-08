@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
-// runs on every request — checks if the token is valid
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -33,13 +33,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // no token — continue without authenticating
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // remove "Bearer " and keep the token
+
         String token = authHeader.substring(7);
         String email = jwtUtil.extractEmail(token);
 
@@ -47,7 +47,7 @@ public class JwtFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             if (jwtUtil.isTokenValid(token, userDetails.getUsername())) {
-                // token is valid — mark user as authenticated
+
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());

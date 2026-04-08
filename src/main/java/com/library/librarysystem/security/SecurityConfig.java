@@ -10,7 +10,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpStatus;
 
 @Configuration
 @EnableMethodSecurity
@@ -26,13 +28,21 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http)
+            throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // THIS IS THE FIX
+                // instead of redirecting to Google when unauthorized
+                // return 401 Unauthorized directly
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+
                 .authorizeHttpRequests(auth -> auth
-                        // public endpoints — no token needed
                         .requestMatchers(
                                 "/auth/**",
                                 "/api/me",
@@ -40,13 +50,10 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        // everything else needs a valid token
                         .anyRequest().authenticated()
                 )
-                // JWT filter runs before default Spring Security filter
                 .addFilterBefore(jwtFilter,
                         UsernamePasswordAuthenticationFilter.class)
-                // OAuth2 login — when Google redirects back to our app
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2SuccessHandler));
 

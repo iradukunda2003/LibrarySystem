@@ -26,13 +26,11 @@ public class BorrowingController {
         return new ResponseEntity<>(borrowingService.borrowBook(request), HttpStatus.CREATED);
     }
 
-
     @PutMapping("/return/{bookId}")
     @Operation(summary = "Return a borrowed book by book ID")
     public ResponseEntity<BorrowingResponseDto> returnBook(@PathVariable Long bookId) {
         return new ResponseEntity<>(borrowingService.returnBook(bookId), HttpStatus.OK);
     }
-
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a borrowing record by its ID")
